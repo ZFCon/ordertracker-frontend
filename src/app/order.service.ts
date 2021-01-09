@@ -33,15 +33,40 @@ export class OrderService {
 
     getWebSocket() {
         this.socket = webSocket(this.webSocket);
-        this.socket.pipe().subscribe((order: Order) => this.whatToDo(order));
+        this.socket.pipe().subscribe((respo) => this.whatToDo(respo));
     }
 
-    whatToDo(order) {
+    addOrder(order: Order) {
+        this.orders.push(order);
+    }
+
+    updateOrder(order: Order) {
         let index = this.orders.findIndex(object => object.id === order.id);
-        if (index != -1) {
-            this.orders[index] = order;
-        } else {
-            this.orders.push(order);
+        this.orders[index] = order;
+    }
+
+    deleteOrder(order: Order) {
+        let index = this.orders.findIndex(object => object.id === order.id);
+        this.orders.splice(index, 1);
+    }
+
+    whatToDo(respo) {
+        let type = respo.type;
+        let order = respo.order
+
+        switch (type) {
+            case 'created': {
+                this.addOrder(order);
+                break;
+            }
+            case 'updated': {
+                this.updateOrder(order);
+                break;
+            }
+            case 'deleted': {
+                this.deleteOrder(order);
+                break;
+            }
         }
 
         this.ordersChanged.emit(this.orders.slice());
