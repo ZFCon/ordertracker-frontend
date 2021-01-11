@@ -10,30 +10,16 @@ import { Order } from './order';
 })
 export class OrderService {
     ordersChanged = new EventEmitter<Order[]>();
+    selectedOrder = new EventEmitter<Order>();
     private socket: WebSocketSubject<any>;
     private endPoint = 'http://127.0.0.1:8000/api/orders/';
     private webSocket = 'ws://127.0.0.1:8000/ws/orders/';
-    private orders: Order[] = [];
+    private orders: Order[];
 
     constructor(private http: HttpClient) {
         this.getEndPoint();
         this.getWebSocket();
 
-    }
-
-    getEndPoint() {
-        let that = this;
-        this.http.get<Order[]>(this.endPoint).subscribe(
-            function (orders) {
-                that.orders = orders;
-                that.ordersChanged.emit(that.orders.slice());
-            }
-        );
-    }
-
-    getWebSocket() {
-        this.socket = webSocket(this.webSocket);
-        this.socket.pipe().subscribe((respo) => this.whatToDo(respo));
     }
 
     addOrder(order: Order) {
@@ -50,7 +36,29 @@ export class OrderService {
         this.orders.splice(index, 1);
     }
 
-    whatToDo(respo) {
+    getOrder(id) {
+        // let url = `${this.endPoint}${id}/`;
+        // return this.http.get<Order>(url);
+
+        return this.orders.find(order => order.id == id);
+    }
+
+    private getEndPoint() {
+        let that = this;
+        this.http.get<Order[]>(this.endPoint).subscribe(
+            function (orders) {
+                that.orders = orders;
+                that.ordersChanged.emit(that.orders.slice());
+            }
+        );
+    }
+
+    private getWebSocket() {
+        this.socket = webSocket(this.webSocket);
+        this.socket.pipe().subscribe((respo) => this.whatToDo(respo));
+    }
+
+    private whatToDo(respo) {
         let type = respo.type;
         let order = respo.order
 
