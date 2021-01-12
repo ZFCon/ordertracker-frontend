@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Order } from '../order';
 import { OrderService } from '../order.service';
 import { MatTableModule } from '@angular/material/table';
 import { DataSource } from '@angular/cdk/table';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -10,17 +11,24 @@ import { DataSource } from '@angular/cdk/table';
     templateUrl: './orders.component.html',
     styleUrls: ['./orders.component.sass']
 })
-export class OrdersComponent implements OnInit {
+export class OrdersComponent implements OnInit, OnDestroy {
     orders: Order[];
     displayedColumns: string[] = ['id', 'request'];
+    subscriptions: Subscription[] = [];
 
     constructor(private orderService: OrderService) { }
 
     ngOnInit() {
-        this.orderService.ordersChanged.subscribe(
+        let subscription = this.orderService.getOrders().subscribe(
             (orders: Order[]) => {
                 this.orders = orders;
             }
         );
+
+        this.subscriptions.push(subscription);
+    }
+
+    ngOnDestroy() {
+        this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 }

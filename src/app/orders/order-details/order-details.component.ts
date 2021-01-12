@@ -4,6 +4,7 @@ import { Order } from 'app/order';
 import { OrderService } from 'app/order.service';
 import { MatButtonModule } from '@angular/material/button';
 import { flatMap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-order-details',
@@ -13,12 +14,12 @@ import { flatMap } from 'rxjs/operators';
 export class OrderDetailsComponent implements OnInit, OnDestroy {
     @Input() order: Order;
     orders: Order[];
-    emiter = null;
+    subscriptions: Subscription[] = [];
 
     constructor(private orderService: OrderService, private route: ActivatedRoute) { }
 
     ngOnInit() {
-        this.orderService.ordersChanged.subscribe((orders) => {
+        let subscription = this.orderService.getOrders().subscribe((orders) => {
             this.orders = orders;
             this.route.params.subscribe(
                 (params) => {
@@ -27,7 +28,11 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
                 }
             );
         });
+
+        this.subscriptions.push(subscription);
     }
 
-    ngOnDestroy() { }
+    ngOnDestroy() {
+        this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    }
 }
