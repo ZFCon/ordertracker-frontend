@@ -10,23 +10,29 @@ import { MatTableModule } from '@angular/material/table';
 import { OrderDetailsComponent } from './orders/order-details/order-details.component';
 import { MatCardModule } from '@angular/material';
 import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { LoginComponent } from './login/login.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
         AppComponent,
         OrdersComponent,
-        OrderDetailsComponent
+        OrderDetailsComponent,
+        LoginComponent
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         HttpClientModule,
         BrowserAnimationsModule,
+        FormsModule,
 
         // Angular material
         MatTableModule,
         MatCardModule,
         MatButtonModule,
+        MatInputModule,
     ],
     providers: [HttpClientModule,],
     bootstrap: [AppComponent]
