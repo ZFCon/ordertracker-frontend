@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
+import { UserService } from 'app/user.service';
 
 @Component({
     selector: 'app-login',
@@ -10,12 +11,12 @@ export class LoginComponent implements OnInit {
     username: String;
     password: String;
 
-    constructor() { }
+    constructor(private userService: UserService) { }
 
     ngOnInit() {
     }
 
     login() {
-        console.log(this.username, this.password);
+        this.userService.auth(this.username, this.password);
     }
 }
