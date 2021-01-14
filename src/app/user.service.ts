@@ -5,24 +5,43 @@ import { Injectable } from '@angular/core';
     providedIn: 'root'
 })
 export class UserService {
-    private userUrl = "http://127.0.0.1:8000/api/user/";
-    private authUrl = "http://127.0.0.1:8000/api/auth/";
-    private token;
-    private httpOptions;
+    private baseUrl = "http://127.0.0.1:8000";
 
-    constructor(private http: HttpClient) {
-        this.httpOptions = {
+    constructor(private http: HttpClient) { }
+
+    auth(username: String, password: String) {
+        let url = `${this.baseUrl}/api/auth/`;
+        let httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
             })
         };
+
+        this.http.post(url, { username: username, password: password }, httpOptions).subscribe(data => localStorage.setItem('token', data['token']));
+    }
+
+    isAuthenticated() {
+        if (this.getToken()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    getToken() {
+        let token = localStorage.getItem('token');
+
+        return token;
     }
 
     getUser() {
-        return this.http.get(this.userUrl, this.httpOptions);
-    }
-
-    auth(username: String, password: String) {
-        this.http.post(this.authUrl, { username: username, password: password }, this.httpOptions).subscribe(data => localStorage.setItem('token', data.token));
+        let url = `${this.baseUrl}/api/user/`;
+        let httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `token ${this.getToken()}`
+            })
+        };
+        return this.http.get(url, httpOptions);
     }
 }

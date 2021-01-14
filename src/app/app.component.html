@@ -1,1 +1,23 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <a mat-button [routerLink]="'/'">
+            <h1>
+                {{ title }}
+            </h1>
+        </a>
+        <span class="menu-spacer"></span>
+        <div>
+            <a mat-button [routerLink]="'/orders'"> Orders </a>
+        </div>
+
+        <div *ngIf="!isAuthenticated">
+            <a mat-button [routerLink]="'/login'"> Login </a>
+        </div>
+
+        <div *ngIf="isAuthenticated">
+            <a mat-button [routerLink]="'/profile'"> Profile </a>
+        </div>
+    </mat-toolbar-row>
+</mat-toolbar>
+
 <router-outlet></router-outlet>
