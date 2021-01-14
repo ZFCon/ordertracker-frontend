@@ -1,11 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserService {
     private baseUrl = "http://127.0.0.1:8000";
+    private authChanged = new EventEmitter<Boolean>();
 
     constructor(private http: HttpClient) { }
 
@@ -18,14 +19,14 @@ export class UserService {
         };
 
         this.http.post(url, { username: username, password: password }, httpOptions).subscribe(data => localStorage.setItem('token', data['token']));
+        this.authChanged.emit(true);
     }
 
     isAuthenticated() {
-        if (this.getToken()) {
-            return true;
-        } else {
-            return false;
-        }
+        let isAuthenticated = this.getToken() != null ? true : false;
+        this.authChanged.emit(isAuthenticated);
+
+        return this.authChanged;
     }
 
     getToken() {

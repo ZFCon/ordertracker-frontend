@@ -13,15 +13,12 @@ export class LoginComponent implements OnInit {
 
     constructor(private userService: UserService, private router: Router) { }
 
-    redirectAuth() {
-        let isAuthenticated = this.userService.isAuthenticated()
-        if (isAuthenticated) {
-            this.router.navigate(['/orders']);
-        }
-    }
-
     ngOnInit() {
-        this.redirectAuth()
+        this.userService.isAuthenticated().subscribe((isAuthenticated) => {
+            if (isAuthenticated) {
+                this.router.navigate(['/orders']);
+            }
+        });
     }
 
     login() {
