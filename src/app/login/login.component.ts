@@ -10,15 +10,17 @@ import { UserService } from 'app/user.service';
 export class LoginComponent implements OnInit {
     username: String;
     password: String;
+    isAuthenticated: Boolean = false;
 
     constructor(private userService: UserService, private router: Router) { }
 
     ngOnInit() {
-        this.userService.isAuthenticated().subscribe((isAuthenticated) => {
-            if (isAuthenticated) {
-                this.router.navigate(['/orders']);
-            }
-        });
+        this.isAuthenticated = this.userService.isAuthenticated();
+        this.userService.authChanged.subscribe((isAuthenticated: Boolean) => this.isAuthenticated = isAuthenticated);
+
+        if (this.isAuthenticated) {
+            this.router.navigate(['/orders']);
+        }
     }
 
     login() {

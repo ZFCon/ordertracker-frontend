@@ -6,7 +6,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 })
 export class UserService {
     private baseUrl = "http://127.0.0.1:8000";
-    private authChanged = new EventEmitter<Boolean>();
+    authChanged = new EventEmitter<Boolean>();
 
     constructor(private http: HttpClient) { }
 
@@ -26,7 +26,7 @@ export class UserService {
         let isAuthenticated = this.getToken() != null ? true : false;
         this.authChanged.emit(isAuthenticated);
 
-        return this.authChanged;
+        return isAuthenticated;
     }
 
     getToken() {

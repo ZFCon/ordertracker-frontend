@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
     constructor(private userService: UserService) { }
 
     ngOnInit() {
-        this.userService.isAuthenticated().subscribe((isAuthenticated) => this.isAuthenticated = isAuthenticated);
+        this.isAuthenticated = this.userService.isAuthenticated();
+        this.userService.authChanged.subscribe((isAuthenticated: Boolean) => this.isAuthenticated = isAuthenticated);
     }
 }
