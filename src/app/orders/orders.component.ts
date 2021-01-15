@@ -13,13 +13,14 @@ import { Subscription } from 'rxjs';
 })
 export class OrdersComponent implements OnInit, OnDestroy {
     orders: Order[];
-    displayedColumns: string[] = ['id', 'request'];
+    displayedColumns: string[] = ['id', 'owner', 'request', 'hasDoer'];
     subscriptions: Subscription[] = [];
 
     constructor(private orderService: OrderService) { }
 
     ngOnInit() {
-        let subscription = this.orderService.getOrders().subscribe(
+        this.orders = this.orderService.getOrders();
+        let subscription = this.orderService.ordersChanged.subscribe(
             (orders: Order[]) => {
                 this.orders = orders;
             }

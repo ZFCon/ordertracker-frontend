@@ -9,7 +9,7 @@ import { Order } from './order';
     providedIn: 'root'
 })
 export class OrderService {
-    private ordersChanged = new EventEmitter<Order[]>();
+    ordersChanged = new EventEmitter<Order[]>();
     private socket: WebSocketSubject<any>;
     private endPoint = 'http://127.0.0.1:8000/api/orders/';
     private webSocket = 'ws://127.0.0.1:8000/ws/orders/';
@@ -21,7 +21,7 @@ export class OrderService {
         this.getEndPoint();
         this.getWebSocket();
 
-        return this.ordersChanged;
+        return this.orders;
     }
 
     getOrder(id) {
@@ -29,7 +29,11 @@ export class OrderService {
     }
 
     addOrder(order: Order) {
-        this.orders.push(order);
+        let index = this.orders.findIndex(object => object.id === order.id);
+
+        if (index == -1) {
+            this.orders.push(order);
+        }
     }
 
     updateOrder(order: Order) {
@@ -39,7 +43,9 @@ export class OrderService {
 
     deleteOrder(order: Order) {
         let index = this.orders.findIndex(object => object.id === order.id);
-        this.orders.splice(index, 1);
+        if (index !== -1) {
+            this.orders.splice(index, 1);
+        }
     }
 
     private getEndPoint() {
@@ -53,7 +59,9 @@ export class OrderService {
     }
 
     private getWebSocket() {
-        this.socket = webSocket(this.webSocket);
+        if (!this.socket) {
+            this.socket = webSocket(this.webSocket);
+        }
         this.socket.pipe().subscribe((respo) => this.whatToDo(respo));
     }
 
