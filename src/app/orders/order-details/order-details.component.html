@@ -1,5 +1,15 @@
 <div class="container">
     <div class="box">
-        <mat-card class="request-card" *ngIf="order">{{ order.request }}</mat-card>
+        <mat-card class="request-card" *ngIf="order">
+            {{ order.request }}
+            <mat-card class="request-card" *ngFor="let request of order.requests">
+                <div class="requests">
+                    <span>{{ request.doer }}</span>
+                    <button class="ml-auto" mat-raised-button color="primary">
+                        {{ request.status }}
+                    </button>
+                </div>
+            </mat-card>
+        </mat-card>
     </div>
 </div>

@@ -17,7 +17,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     constructor(private orderService: OrderService) { }
 
     ngOnInit() {
-        this.orderService.getOrders().subscribe(orders => this.orders = orders);
+        this.orderService.getOrders().subscribe(orders => { this.orders = orders; console.log(orders); });
         let subscription = this.orderService.ordersChanged.subscribe(
             (orders: Order[]) => {
                 this.orders = orders;
