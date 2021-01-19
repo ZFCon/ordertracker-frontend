@@ -13,13 +13,13 @@ export class OrderService {
     private webSocket = 'ws://127.0.0.1:8000/ws/orders/';
     private orders: Order[];
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+        this.getOrders().subscribe((orders) => this.ordersChanged.emit(orders.slice()));
+        this.getWebSocket();
+    }
 
     getOrders() {
-        this.getEndPoint();
-        this.getWebSocket();
-
-        return this.orders;
+        return this.http.get<Order[]>(this.endPoint);
     }
 
     getOrder(id) {
@@ -45,16 +45,6 @@ export class OrderService {
         if (index !== -1) {
             this.orders.splice(index, 1);
         }
-    }
-
-    private getEndPoint() {
-        let that = this;
-        this.http.get<Order[]>(this.endPoint).subscribe(
-            function (orders) {
-                that.orders = orders;
-                that.ordersChanged.emit(that.orders.slice());
-            }
-        );
     }
 
     private getWebSocket() {

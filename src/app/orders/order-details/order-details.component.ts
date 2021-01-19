@@ -13,28 +13,28 @@ import { Subscription } from 'rxjs';
 })
 export class OrderDetailsComponent implements OnInit, OnDestroy {
     order: Order;
-    @Input() orders: Order[];
+    orders: Order[];
     subscriptions: Subscription[] = [];
 
     constructor(private orderService: OrderService, private route: ActivatedRoute) { }
 
     ngOnInit() {
-        this.orders = this.orderService.getOrders();
+        this.orderService.getOrders().subscribe((orders) => {
+            let routerSubscription = this.route.params.subscribe(
+                (params) => {
+                    let id = params.id;
+                    this.order = this.orders.find(order => order.id == id);
+                }
+            );
+            this.subscriptions.push(routerSubscription);
+        });
+
         let ordersSubscription = this.orderService.ordersChanged.subscribe(
             (orders: Order[]) => {
                 this.orders = orders;
             }
         );
         this.subscriptions.push(ordersSubscription);
-
-        let routerSubscription = this.route.params.subscribe(
-            (params) => {
-                let id = params.id;
-                this.order = this.orders.find(order => order.id == id);
-                console.log(this.orders);
-            }
-        );
-        this.subscriptions.push(routerSubscription);
     }
 
     ngOnDestroy() {

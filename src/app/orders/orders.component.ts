@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Order } from '../order';
 import { OrderService } from '../order.service';
-import { MatTableModule } from '@angular/material/table';
-import { DataSource } from '@angular/cdk/table';
 import { Subscription } from 'rxjs';
 
 
@@ -19,7 +17,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     constructor(private orderService: OrderService) { }
 
     ngOnInit() {
-        this.orders = this.orderService.getOrders();
+        this.orderService.getOrders().subscribe(orders => this.orders = orders);
         let subscription = this.orderService.ordersChanged.subscribe(
             (orders: Order[]) => {
                 this.orders = orders;
