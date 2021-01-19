@@ -1,8 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
 import { Order } from './order';
 
 @Injectable({
@@ -25,7 +23,8 @@ export class OrderService {
     }
 
     getOrder(id) {
-        return this.orders.find(order => order.id == id);
+        let url = `${this.endPoint}${id}/`;
+        return this.http.get(url);
     }
 
     addOrder(order: Order) {
@@ -67,23 +66,25 @@ export class OrderService {
 
     private whatToDo(respo) {
         let type = respo.type;
-        let order = respo.order
+        let id = respo.id
 
-        switch (type) {
-            case 'created': {
-                this.addOrder(order);
-                break;
+        this.getOrder(id).subscribe((order: Order) => {
+            switch (type) {
+                case 'created': {
+                    this.addOrder(order);
+                    break;
+                }
+                case 'updated': {
+                    this.updateOrder(order);
+                    break;
+                }
+                case 'deleted': {
+                    this.deleteOrder(order);
+                    break;
+                }
             }
-            case 'updated': {
-                this.updateOrder(order);
-                break;
-            }
-            case 'deleted': {
-                this.deleteOrder(order);
-                break;
-            }
-        }
 
-        this.ordersChanged.emit(this.orders.slice());
+            this.ordersChanged.emit(this.orders.slice());
+        });
     }
 }
