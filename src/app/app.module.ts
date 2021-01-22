@@ -12,7 +12,7 @@ import { MatCardModule, MatIconModule, MatListModule, MatSidenavModule, MatToolb
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { LoginComponent } from './login/login.component';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
 
@@ -30,7 +30,7 @@ import { HomeComponent } from './home/home.component';
         AppRoutingModule,
         HttpClientModule,
         BrowserAnimationsModule,
-        FormsModule,
+        ReactiveFormsModule,
 
         // Angular material
         MatTableModule,

@@ -18,8 +18,7 @@ export class UserService {
             })
         };
 
-        this.http.post(url, { username: username, password: password }, httpOptions).subscribe(data => localStorage.setItem('token', data['token']));
-        this.authChanged.emit(true);
+        return this.http.post(url, { username: username, password: password }, httpOptions);
     }
 
     isAuthenticated() {
@@ -33,6 +32,11 @@ export class UserService {
         let token = localStorage.getItem('token');
 
         return token;
+    }
+
+    setToken(token) {
+        localStorage.setItem('token', token);
+        this.authChanged.emit(true);
     }
 
     getUser() {
