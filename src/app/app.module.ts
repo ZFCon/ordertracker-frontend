@@ -11,6 +11,7 @@ import { OrderDetailsComponent } from './orders/order-details/order-details.comp
 import { MatCardModule, MatIconModule, MatListModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { MatBadgeModule } from '@angular/material/badge';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile.component';
@@ -41,6 +42,7 @@ import { HomeComponent } from './home/home.component';
         MatSidenavModule,
         MatListModule,
         MatIconModule,
+        MatBadgeModule,
     ],
     providers: [HttpClientModule,],
     bootstrap: [AppComponent]

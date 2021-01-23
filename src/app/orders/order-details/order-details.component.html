@@ -1,15 +1,26 @@
-<div class="container">
-    <div class="box">
-        <mat-card class="request-card" *ngIf="order">
-            {{ order.request }}
-            <mat-card class="request-card" *ngFor="let request of order.requests">
-                <div class="requests">
-                    <span>{{ request.doer }}</span>
-                    <button class="ml-auto" mat-raised-button color="primary">
-                        {{ request.status }}
-                    </button>
-                </div>
-            </mat-card>
-        </mat-card>
-    </div>
-</div>
+<h4 class="mt-2">
+    Requests
+</h4>
+<mat-card class="request-card my-2" *ngFor="let request of order.requests">
+    <mat-card-header>
+        <mat-card-title>{{ request.doer_details }}</mat-card-title>
+        <mat-card-subtitle>{{ request.created }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+        <mat-card-actions [ngSwitch]="request.status">
+            <div *ngSwitchCase="'pending'">
+                <button mat-raised-button color="primary">Accept</button>
+                <button mat-raised-button color="warn">Refuse</button>
+            </div>
+
+            <div *ngSwitchCase="'accepted'">
+
+            </div>
+
+            <div *ngSwitchCase="'Refused'">
+
+            </div>
+        </mat-card-actions>
+    </mat-card-content>
+</mat-card>

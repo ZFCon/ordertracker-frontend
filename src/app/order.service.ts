@@ -14,12 +14,14 @@ export class OrderService {
     private orders: Order[];
 
     constructor(private http: HttpClient) {
-        this.getOrders().subscribe((orders) => this.ordersChanged.emit(orders.slice()));
         this.getWebSocket();
     }
 
     getOrders() {
-        return this.http.get<Order[]>(this.endPoint);
+        let request = this.http.get<Order[]>(this.endPoint)
+        request.subscribe(orders => this.orders = orders);
+
+        return request;
     }
 
     getOrder(id) {

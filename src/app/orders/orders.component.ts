@@ -17,14 +17,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
     constructor(private orderService: OrderService) { }
 
     ngOnInit() {
-        this.orderService.getOrders().subscribe(orders => { this.orders = orders; console.log(orders); });
-        let subscription = this.orderService.ordersChanged.subscribe(
-            (orders: Order[]) => {
-                this.orders = orders;
-            }
-        );
+        let httpSubscription = this.orderService.getOrders().subscribe(orders => this.orders = orders);
+        let socketSubscription = this.orderService.ordersChanged.subscribe(orders => this.orders = orders);
 
-        this.subscriptions.push(subscription);
+        this.subscriptions.push(httpSubscription);
+        this.subscriptions.push(socketSubscription);
     }
 
     ngOnDestroy() {

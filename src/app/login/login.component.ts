@@ -17,9 +17,7 @@ export class LoginComponent implements OnInit {
     isAuthenticated: Boolean = false;
     error = {};
 
-    constructor(private userService: UserService, private router: Router) {
-        console.log(this.loginForm.touched);
-    }
+    constructor(private userService: UserService, private router: Router) { }
 
     ngOnInit() {
         this.isAuthenticated = this.userService.isAuthenticated();
