@@ -20,9 +20,14 @@
                     </mat-card-actions>
                 </mat-card-content>
             </mat-card>
-
-            <app-order-details [order]="order"></app-order-details>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Requests
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <app-order-details [order]="order"></app-order-details>
+            </mat-expansion-panel>
         </div>
-
     </div>
 </div>

@@ -16,6 +16,7 @@ import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
     declarations: [
@@ -43,6 +44,7 @@ import { HomeComponent } from './home/home.component';
         MatListModule,
         MatIconModule,
         MatBadgeModule,
+        MatExpansionModule,
     ],
     providers: [HttpClientModule,],
     bootstrap: [AppComponent]
