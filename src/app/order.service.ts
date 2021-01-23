@@ -9,8 +9,8 @@ import { Order } from './order';
 export class OrderService {
     ordersChanged = new EventEmitter<Order[]>();
     private socket: WebSocketSubject<any>;
-    private endPoint = 'http://127.0.0.1:8000/api/orders/';
-    private webSocket = 'ws://127.0.0.1:8000/ws/orders/';
+    private endPoint = 'http://127.0.0.1:8000/api/order/';
+    private webSocket = 'ws://127.0.0.1:8000/ws/order/';
     private orders: Order[];
 
     constructor(private http: HttpClient) {
