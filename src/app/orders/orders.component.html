@@ -5,7 +5,11 @@
         <div class="order" *ngFor="let order of orders">
             <mat-card class="mt-5">
                 <mat-card-header>
-                    <mat-card-title>{{ order.owner_details }}</mat-card-title>
+                    <mat-card-title>{{ order.owner_details }}
+                        <span class="badge badge-pill badge-success" *ngIf="order.doer">
+                            <small>{{ order.doer }}</small>
+                        </span>
+                    </mat-card-title>
                     <mat-card-subtitle>{{ order.created }}</mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>

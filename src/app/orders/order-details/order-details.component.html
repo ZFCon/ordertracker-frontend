@@ -21,7 +21,7 @@
 
     <mat-card-content>
         <mat-card-actions *ngIf="request.status == 'pending'">
-            <button mat-raised-button color="primary">Accept</button>
+            <button mat-raised-button color="primary" (click)="acceptRequest(request)">Accept</button>
             <button mat-raised-button color="warn">Refuse</button>
         </mat-card-actions>
     </mat-card-content>
