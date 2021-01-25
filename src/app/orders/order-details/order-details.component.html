@@ -1,23 +1,28 @@
 <mat-card class="request-card my-2" *ngFor="let request of order.requests">
     <mat-card-header>
-        <mat-card-title>{{ request.doer_details }}</mat-card-title>
+        <mat-card-title [ngSwitch]="request.status">
+            {{ request.doer_details }}
+
+            <span class="badge badge-pill badge-success" *ngSwitchCase="'accepted'">
+                <small>Accepted</small>
+            </span>
+
+            <span class="badge badge-pill badge-warning" *ngSwitchCase="'refused'">
+                <small>Refused</small>
+            </span>
+
+            <span class="badge badge-pill badge-warning" *ngSwitchCase="'pending'">
+                <small>Pending</small>
+            </span>
+
+        </mat-card-title>
         <mat-card-subtitle>{{ request.created }}</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
-        <mat-card-actions [ngSwitch]="request.status">
-            <div *ngSwitchCase="'pending'">
-                <button mat-raised-button color="primary">Accept</button>
-                <button mat-raised-button color="warn">Refuse</button>
-            </div>
-
-            <div *ngSwitchCase="'accepted'">
-
-            </div>
-
-            <div *ngSwitchCase="'Refused'">
-
-            </div>
+        <mat-card-actions *ngIf="request.status == 'pending'">
+            <button mat-raised-button color="primary">Accept</button>
+            <button mat-raised-button color="warn">Refuse</button>
         </mat-card-actions>
     </mat-card-content>
 </mat-card>

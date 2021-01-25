@@ -12,22 +12,16 @@
                     <p>
                         {{ order.request }}
                     </p>
-                    <mat-card-actions>
-                        <button mat-raised-button color="primary" matBadge="{{ order.requests.length }}"
-                            matBadgePosition="after" matBadgeColor="accent">
-                            Requests
-                        </button>
-                    </mat-card-actions>
                 </mat-card-content>
             </mat-card>
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        Requests
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <app-order-details [order]="order"></app-order-details>
-            </mat-expansion-panel>
+            <div class="mt-2" matBadge="{{ order.requests.length }}" matBadgePosition="after" matBadgeColor="primary">
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Requests</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-order-details [order]="order"></app-order-details>
+                </mat-expansion-panel>
+            </div>
         </div>
     </div>
 </div>
