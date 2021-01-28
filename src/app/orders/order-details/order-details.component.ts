@@ -9,6 +9,7 @@ import { OrderRequestService } from 'app/order-request.service';
 })
 export class OrderDetailsComponent implements OnInit {
     @Input() order: Order;
+    errors: String[];
 
     constructor(private requestService: OrderRequestService) { }
 
@@ -16,10 +17,16 @@ export class OrderDetailsComponent implements OnInit {
     }
 
     acceptRequest(request) {
-        this.requestService.requestStatueUpdate(request.order, request.id, true).subscribe(data => console.log(data));
+        this.requestService.requestStatueUpdate(request.order, request.id, true).subscribe(
+            data => console.log(data),
+            data => this.errors = data.error.non_field_errors
+        );
     }
 
     refuseRequest(request) {
-        this.requestService.requestStatueUpdate(request.order, request.id, true).subscribe(data => console.log(data));
+        this.requestService.requestStatueUpdate(request.order, request.id, false).subscribe(
+            data => console.log(data),
+            data => this.errors = data.error.non_field_errors
+        );
     }
 }
