@@ -1,7 +1,8 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Order } from './order';
+import { UserService } from './user.service';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,7 @@ export class OrderService {
     private webSocket = 'ws://127.0.0.1:8000/ws/order/';
     private orders: Order[];
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private userService: UserService) {
         this.getWebSocket();
     }
 
@@ -27,6 +28,21 @@ export class OrderService {
     getOrder(id) {
         let url = `${this.endPoint}${id}/`;
         return this.http.get(url);
+    }
+
+    createOrder(request) {
+        let url = this.endPoint;
+        let httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `token ${this.userService.getToken()}`
+            })
+        };
+        let payload = {
+            request: request
+        };
+
+        return this.http.post(url, payload, httpOptions);
     }
 
     addOrder(order: Order) {

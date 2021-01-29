@@ -32,4 +32,16 @@ export class OrdersComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
+
+    createOrder(form) {
+        let request = this.createForm.get('request');
+
+        this.orderService.createOrder(request.value).subscribe(
+            data => {
+                console.log(data);
+                form.resetForm();
+            },
+            data => console.log(data),
+        )
+    }
 }
