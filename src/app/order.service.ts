@@ -45,6 +45,19 @@ export class OrderService {
         return this.http.post(url, payload, httpOptions);
     }
 
+    createDoerRequest(orderId) {
+        let url = `${this.endPoint}${orderId}/requests/`;
+        let httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `token ${this.userService.getToken()}`
+            })
+        };
+        let payload = {};
+
+        return this.http.post(url, payload, httpOptions);
+    }
+
     addOrder(order: Order) {
         let index = this.orders.findIndex(object => object.id === order.id);
 

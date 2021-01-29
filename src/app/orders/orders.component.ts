@@ -44,4 +44,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
             data => console.log(data),
         )
     }
+
+    createDoerRequest(orderId) {
+        this.orderService.createDoerRequest(orderId).subscribe(
+            data => console.log(data),
+            data => console.log(data),
+        )
+    }
 }
