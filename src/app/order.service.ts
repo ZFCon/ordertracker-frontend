@@ -49,7 +49,7 @@ export class OrderService {
         let index = this.orders.findIndex(object => object.id === order.id);
 
         if (index == -1) {
-            this.orders.push(order);
+            this.orders.unshift(order);
         }
     }
 
