@@ -1,7 +1,23 @@
 <div class="container">
     <div class="body">
         <h1>Orders</h1>
-
+        <mat-card class="my-5">
+            <form class="create-form" [formGroup]="createForm">
+                <div class="row">
+                    <div class="col-10">
+                        <mat-form-field class="full-width-input">
+                            <mat-label>Request</mat-label>
+                            <input matInput placeholder="I want to be a Hero" name="request" formControlName="request">
+                        </mat-form-field>
+                        <mat-error
+                            *ngIf="createForm.get('request').errors?.required && createForm.get('request')?.touched">
+                            This Field is required.
+                        </mat-error>
+                    </div>
+                    <button mat-raised-button class="ml-1 create-btn">Create</button>
+                </div>
+            </form>
+        </mat-card>
         <div class="order" *ngFor="let order of orders">
             <mat-card class="mt-5">
                 <mat-card-header>

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Order } from '../order';
 import { OrderService } from '../order.service';
 import { Subscription } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -13,6 +14,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
     orders: Order[];
     displayedColumns: string[] = ['id', 'owner', 'request', 'hasDoer'];
     subscriptions: Subscription[] = [];
+
+    createForm: FormGroup = new FormGroup({
+        request: new FormControl(null, Validators.required)
+    });
 
     constructor(private orderService: OrderService) { }
 
