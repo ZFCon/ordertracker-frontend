@@ -12,7 +12,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class OrdersComponent implements OnInit, OnDestroy {
     orders: Order[];
-    displayedColumns: string[] = ['id', 'owner', 'request', 'hasDoer'];
     subscriptions: Subscription[] = [];
 
     createForm: FormGroup = new FormGroup({
@@ -41,13 +40,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
                 console.log(data);
                 form.resetForm();
             },
-            data => console.log(data),
-        )
-    }
-
-    createDoerRequest(orderId) {
-        this.orderService.createDoerRequest(orderId).subscribe(
-            data => console.log(data),
             data => console.log(data),
         )
     }
