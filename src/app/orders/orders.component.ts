@@ -18,6 +18,9 @@ export class OrdersComponent implements OnInit, OnDestroy {
         request: new FormControl(null, Validators.required)
     });
 
+    lat = 51.678418;
+    lng = 7.809007;
+
     constructor(private orderService: OrderService) { }
 
     ngOnInit() {
