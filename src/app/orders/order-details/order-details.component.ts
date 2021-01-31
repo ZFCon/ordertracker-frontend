@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { Order } from 'app/order';
 import { OrderRequestService } from 'app/order-request.service';
 import { OrderService } from 'app/order.service';
@@ -8,14 +8,24 @@ import { OrderService } from 'app/order.service';
     templateUrl: './order-details.component.html',
     styleUrls: ['./order-details.component.sass']
 })
-export class OrderDetailsComponent implements OnInit {
+export class OrderDetailsComponent implements OnInit, OnChanges {
     @Input() order: Order;
-    requestErrors: String[];
-    orderErrors: String[];
+    requestErrors: string[];
+    orderErrors: string[];
+    expanded: Boolean;
+    panelId: string;
 
     constructor(private requestService: OrderRequestService, private orderService: OrderService) { }
 
     ngOnInit() {
+        this.panelId = `panel-${this.order.id}`
+
+        let expanded = localStorage.getItem(this.panelId);
+        this.expanded = true ? expanded == 'true' : false
+    }
+
+    panelExpanded(expanded: Boolean) {
+        localStorage.setItem(`panel-${this.order.id}`, expanded.toString());
     }
 
     acceptRequest(request) {

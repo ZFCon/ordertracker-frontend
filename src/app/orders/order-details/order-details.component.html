@@ -21,7 +21,7 @@
         </mat-card-actions>
     </mat-card>
     <div class="mt-2" matBadge="{{ order.requests.length }}" matBadgePosition="after" matBadgeColor="primary">
-        <mat-expansion-panel>
+        <mat-expansion-panel [expanded]="expanded" (opened)="panelExpanded(true)" (closed)="panelExpanded(false)" #gg>
             <mat-expansion-panel-header>
                 <mat-panel-title>Requests</mat-panel-title>
             </mat-expansion-panel-header>
