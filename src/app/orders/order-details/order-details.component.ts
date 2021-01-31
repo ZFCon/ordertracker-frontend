@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Order } from 'app/order';
 import { OrderRequestService } from 'app/order-request.service';
 import { OrderService } from 'app/order.service';
@@ -8,7 +8,7 @@ import { OrderService } from 'app/order.service';
     templateUrl: './order-details.component.html',
     styleUrls: ['./order-details.component.sass']
 })
-export class OrderDetailsComponent implements OnInit, OnChanges {
+export class OrderDetailsComponent implements OnInit {
     @Input() order: Order;
     requestErrors: string[];
     orderErrors: string[];
