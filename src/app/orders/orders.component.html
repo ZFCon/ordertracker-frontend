@@ -2,9 +2,7 @@
     <div class="body">
         <h1>Orders</h1>
         <mat-card>
-            <agm-map mat-card-image [latitude]="lat" [longitude]="lng">
-                <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
-            </agm-map>
+            
         </mat-card>
         <mat-card class="my-5">
             <form class="create-form" [formGroup]="createForm" (ngSubmit)="createOrder(f)" #f="ngForm">

@@ -17,7 +17,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
     declarations: [
@@ -46,11 +45,6 @@ import { AgmCoreModule } from '@agm/core';
         MatIconModule,
         MatBadgeModule,
         MatExpansionModule,
-
-        // google map
-        AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyAVsyujtoh4A4_dsOs8BnkoBpq5gMjHUkE',
-        })
     ],
     providers: [HttpClientModule,],
     bootstrap: [AppComponent]
