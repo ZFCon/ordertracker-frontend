@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Order } from 'app/order';
 import { OrderRequestService } from 'app/order-request.service';
 import { OrderService } from 'app/order.service';
+import * as ol from "openlayers";
 
 @Component({
     selector: 'app-order-details',
@@ -14,6 +15,8 @@ export class OrderDetailsComponent implements OnInit {
     orderErrors: string[];
     expanded: Boolean;
     panelId: string;
+    private mapId: string;
+    private map: ol.Map;
 
     constructor(private requestService: OrderRequestService, private orderService: OrderService) { }
 
@@ -21,7 +24,10 @@ export class OrderDetailsComponent implements OnInit {
         this.panelId = `panel-${this.order.id}`
 
         let expanded = localStorage.getItem(this.panelId);
-        this.expanded = true ? expanded == 'true' : false
+        this.expanded = true ? expanded == 'true' : false;
+
+        this.mapId = `map-${this.order.id}`;
+        this.createMap(this.mapId);
     }
 
     panelExpanded(expanded: Boolean) {
@@ -50,5 +56,37 @@ export class OrderDetailsComponent implements OnInit {
             data => console.log(data),
             data => this.orderErrors = data.error.non_field_errors,
         )
+    }
+
+    createMap(mapId) {
+        this.map = new ol.Map({
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                })
+            ],
+            target: mapId,
+            view: new ol.View({
+                center: [0, 0],
+                zoom: 2,
+            })
+        });
+        console.log(this.map);
+
+        const locationSource = new ol.source.Vector();
+        const locationLayer = new ol.layer.Vector({ source: locationSource });
+
+        this.map.addLayer(locationLayer);
+
+        navigator.geolocation.watchPosition(res => {
+            let coords = res.coords;
+            let location = ol.proj.fromLonLat([coords.latitude, coords.longitude]);
+
+            locationSource.clear();
+            locationSource.addFeatures([
+                new ol.Feature(new ol.geom.Point(location)),
+              ]);
+            this.map.getView().setCenter(location);
+        });
     }
 }

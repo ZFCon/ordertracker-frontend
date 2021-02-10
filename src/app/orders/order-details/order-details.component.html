@@ -8,6 +8,9 @@
             </mat-card-title>
             <mat-card-subtitle>{{ order.created }}</mat-card-subtitle>
         </mat-card-header>
+
+        <div mat-card-image [id]="mapId"></div>
+
         <mat-card-content>
             <p>
                 {{ order.request }}
