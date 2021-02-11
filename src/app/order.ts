@@ -13,4 +13,5 @@ export interface Order {
     request: string;
     doer: string;
     requests: OrderRequest[],
+    location: any,
 }

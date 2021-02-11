@@ -3,6 +3,7 @@ import { Order } from 'app/order';
 import { OrderRequestService } from 'app/order-request.service';
 import { OrderService } from 'app/order.service';
 import * as ol from "openlayers";
+// import sync from 'ol-hashed';
 
 @Component({
     selector: 'app-order-details',
@@ -17,6 +18,9 @@ export class OrderDetailsComponent implements OnInit, AfterViewInit {
     private panelId: string;
     private mapId: string;
     private map: ol.Map;
+    private source: ol.source.Vector;
+    private layer: ol.layer.Vector;
+    private location: ol.Coordinate;
 
     constructor(private requestService: OrderRequestService, private orderService: OrderService) { }
 
@@ -27,10 +31,18 @@ export class OrderDetailsComponent implements OnInit, AfterViewInit {
         this.expanded = true ? expanded == 'true' : false;
 
         this.mapId = `map-${this.order.id}`;
+        this.source = new ol.source.Vector();
+        this.layer = new ol.layer.Vector({ source: this.source });
     }
 
     ngAfterViewInit() {
         this.createMap(this.mapId);
+        // get your location
+        navigator.geolocation.watchPosition(res => {
+            let coords = res.coords;
+            this.location = ol.proj.fromLonLat([coords.latitude, coords.longitude]);
+            this.setLocationPoint(this.location);
+        });
     }
 
     panelExpanded(expanded: Boolean) {
@@ -74,22 +86,36 @@ export class OrderDetailsComponent implements OnInit, AfterViewInit {
                 zoom: 2,
             })
         });
+        this.map.addLayer(this.layer);
 
-        const locationSource = new ol.source.Vector();
-        const locationLayer = new ol.layer.Vector({ source: locationSource });
+        let orderLocation = this.order.location;
+        if(orderLocation) {
+            let orderSource = new ol.source.Vector();
+            let orderLayer = new ol.layer.Vector({ source: orderSource });
+            let orderStyle = new ol.style.Style({
+                image: new ol.style.Circle({
+                    stroke: new ol.style.Stroke({
+                        color: 'green',
+                        width: 1.25
+                    }),
+                radius: 5
+                })
+            });
 
-        this.map.addLayer(locationLayer);
+            orderLayer.setStyle(orderStyle);
 
-        // get your location
-        navigator.geolocation.watchPosition(res => {
-            let coords = res.coords;
-            let location = ol.proj.fromLonLat([coords.latitude, coords.longitude]);
+            let orderPoint = ol.proj.fromLonLat(orderLocation.coordinates);
+            orderSource.addFeature(new ol.Feature(new ol.geom.Point(orderPoint)));
+        }
+    }
 
-            locationSource.clear();
-            locationSource.addFeatures([
-                new ol.Feature(new ol.geom.Point(location)),
-              ]);
-            this.map.getView().setCenter(location);
-        });
+    setLocationPoint(location) {
+        if(location) {
+            this.source.clear();
+            this.source.addFeature(new ol.Feature(new ol.geom.Point(this.location)));
+            
+            this.map.getView().setZoom(10);
+            this.map.getView().setCenter(this.location);
+        }
     }
 }
