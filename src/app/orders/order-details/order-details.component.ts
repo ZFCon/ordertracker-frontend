@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit} from '@angular/core';
 import { Order } from 'app/order';
 import { OrderRequestService } from 'app/order-request.service';
 import { OrderService } from 'app/order.service';
@@ -9,12 +9,12 @@ import * as ol from "openlayers";
     templateUrl: './order-details.component.html',
     styleUrls: ['./order-details.component.sass']
 })
-export class OrderDetailsComponent implements OnInit {
+export class OrderDetailsComponent implements OnInit, AfterViewInit {
     @Input() order: Order;
     requestErrors: string[];
     orderErrors: string[];
-    expanded: Boolean;
-    panelId: string;
+    private expanded: Boolean;
+    private panelId: string;
     private mapId: string;
     private map: ol.Map;
 
@@ -27,6 +27,9 @@ export class OrderDetailsComponent implements OnInit {
         this.expanded = true ? expanded == 'true' : false;
 
         this.mapId = `map-${this.order.id}`;
+    }
+
+    ngAfterViewInit() {
         this.createMap(this.mapId);
     }
 
@@ -71,13 +74,13 @@ export class OrderDetailsComponent implements OnInit {
                 zoom: 2,
             })
         });
-        console.log(this.map);
 
         const locationSource = new ol.source.Vector();
         const locationLayer = new ol.layer.Vector({ source: locationSource });
 
         this.map.addLayer(locationLayer);
 
+        // get your location
         navigator.geolocation.watchPosition(res => {
             let coords = res.coords;
             let location = ol.proj.fromLonLat([coords.latitude, coords.longitude]);
